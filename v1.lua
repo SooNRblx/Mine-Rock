@@ -6,7 +6,6 @@
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local VirtualUser = game:GetService("VirtualUser")
 
 local player = Players.LocalPlayer
@@ -17,20 +16,13 @@ local playerGui = player:WaitForChild("PlayerGui")
 --==================================================
 
 local autoFarmActive = false
-local rebirthActive = false
 local antiAfkActive = false
 
 local walkSpeedValue = 16
 local jumpPowerValue = 50
 
 --==================================================
--- 3. REMOTES
---==================================================
-
-local remotesFolder = ReplicatedStorage:WaitForChild("Remotes")
-
---==================================================
--- 4. AUTO FARM POSITIONS
+-- 3. AUTO FARM POSITIONS
 --==================================================
 
 local farmPoints = {
@@ -61,7 +53,7 @@ local farmPoints = {
 }
 
 --==================================================
--- 5. CLEAN OLD GUI
+-- 4. CLEAN OLD GUI
 --==================================================
 
 local oldGui = playerGui:FindFirstChild("MagicEvolutionGui")
@@ -71,7 +63,7 @@ if oldGui then
 end
 
 --==================================================
--- 6. SCREEN GUI
+-- 5. SCREEN GUI
 --==================================================
 
 local screenGui = Instance.new("ScreenGui")
@@ -81,7 +73,7 @@ screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 screenGui.Parent = playerGui
 
 --==================================================
--- 7. COLORS
+-- 6. COLORS
 --==================================================
 
 local backgroundColor = Color3.fromRGB(24, 24, 28)
@@ -98,7 +90,7 @@ local onColor = Color3.fromRGB(45, 170, 75)
 local redColor = Color3.fromRGB(190, 55, 55)
 
 --==================================================
--- 8. OPEN BUTTON
+-- 7. OPEN BUTTON
 --==================================================
 
 local logo = Instance.new("TextButton")
@@ -123,7 +115,7 @@ logoStroke.Transparency = 0.35
 logoStroke.Parent = logo
 
 --==================================================
--- 9. MAIN FRAME
+-- 8. MAIN FRAME
 --==================================================
 
 local frame = Instance.new("Frame")
@@ -145,7 +137,7 @@ frameStroke.Transparency = 0.35
 frameStroke.Parent = frame
 
 --==================================================
--- 10. HEADER
+-- 9. HEADER
 --==================================================
 
 local header = Instance.new("Frame")
@@ -168,7 +160,7 @@ headerBottom.BorderSizePixel = 0
 headerBottom.Parent = header
 
 --==================================================
--- TITLE
+-- 10. TITLE
 --==================================================
 
 local title = Instance.new("TextLabel")
@@ -194,7 +186,7 @@ subtitle.TextXAlignment = Enum.TextXAlignment.Left
 subtitle.Parent = header
 
 --==================================================
--- CLOSE BUTTON
+-- 11. CLOSE BUTTON
 --==================================================
 
 local close = Instance.new("TextButton")
@@ -213,7 +205,7 @@ closeCorner.CornerRadius = UDim.new(0, 10)
 closeCorner.Parent = close
 
 --==================================================
--- 11. SCROLL
+-- 12. SCROLL
 --==================================================
 
 local scroll = Instance.new("ScrollingFrame")
@@ -224,7 +216,7 @@ scroll.BackgroundTransparency = 1
 scroll.BorderSizePixel = 0
 scroll.ScrollBarThickness = 3
 scroll.ScrollBarImageTransparency = 0.35
-scroll.CanvasSize = UDim2.new(0, 0, 0, 470)
+scroll.CanvasSize = UDim2.new(0, 0, 0, 380)
 scroll.Parent = frame
 
 local layout = Instance.new("UIListLayout")
@@ -234,7 +226,7 @@ layout.SortOrder = Enum.SortOrder.LayoutOrder
 layout.Parent = scroll
 
 --==================================================
--- 12. HELPER FUNCTIONS
+-- 13. HELPER FUNCTIONS
 --==================================================
 
 local function createSection(name, height)
@@ -318,28 +310,15 @@ local function setToggle(button, state)
 end
 
 --==================================================
--- 13. FARM SECTION
+-- 14. FARM SECTION
 --==================================================
 
-local farmSection = createSection("Farm", 115)
+local farmSection = createSection("Farm", 85)
 createSectionTitle(farmSection, "FARM")
 
 local btnAF = createToggle(
     farmSection,
     "Auto Farm",
-    38
-)
-
---==================================================
--- 14. REBIRTH SECTION
---==================================================
-
-local rebirthSection = createSection("Rebirth", 85)
-createSectionTitle(rebirthSection, "REBIRTH")
-
-local rebirthButton = createToggle(
-    rebirthSection,
-    "Rebirth",
     34
 )
 
@@ -349,6 +328,8 @@ local rebirthButton = createToggle(
 
 local moveSection = createSection("Movement", 150)
 createSectionTitle(moveSection, "MOVEMENT")
+
+-- WALKSPEED
 
 local labelWS = Instance.new("TextLabel")
 labelWS.Size = UDim2.new(0, 220, 0, 25)
@@ -382,6 +363,8 @@ dotWS.Parent = sliderWS
 local dotCornerWS = Instance.new("UICorner")
 dotCornerWS.CornerRadius = UDim.new(1, 0)
 dotCornerWS.Parent = dotWS
+
+-- JUMPPOWER
 
 local labelJP = Instance.new("TextLabel")
 labelJP.Size = UDim2.new(0, 220, 0, 25)
@@ -489,10 +472,7 @@ local function makeDraggable(obj, target)
 
 end
 
--- Menu déplaçable
 makeDraggable(header, frame)
-
--- Bouton ⚡ déplaçable
 makeDraggable(logo)
 
 --==================================================
@@ -625,19 +605,7 @@ btnAF.Activated:Connect(function()
 end)
 
 --==================================================
--- 21. REBIRTH BUTTON
---==================================================
-
-rebirthButton.Activated:Connect(function()
-
-    rebirthActive = not rebirthActive
-
-    setToggle(rebirthButton, rebirthActive)
-
-end)
-
---==================================================
--- 22. ANTI-AFK BUTTON
+-- 21. ANTI-AFK BUTTON
 --==================================================
 
 btnAA.Activated:Connect(function()
@@ -649,7 +617,7 @@ btnAA.Activated:Connect(function()
 end)
 
 --==================================================
--- 23. MOVEMENT
+-- 22. MOVEMENT
 --==================================================
 
 RunService.Stepped:Connect(function()
@@ -676,7 +644,7 @@ RunService.Stepped:Connect(function()
 end)
 
 --==================================================
--- 24. TELEPORT FUNCTION
+-- 23. TELEPORT FUNCTION
 --==================================================
 
 local function teleportTo(position)
@@ -700,7 +668,7 @@ local function teleportTo(position)
 end
 
 --==================================================
--- 25. AUTO FARM LOOP
+-- 24. AUTO FARM LOOP
 --==================================================
 
 task.spawn(function()
@@ -711,8 +679,6 @@ task.spawn(function()
 
             for _, point in ipairs(farmPoints) do
 
-                -- Si désactivé pendant le parcours,
-                -- on arrête immédiatement.
                 if not autoFarmActive then
                     break
                 end
@@ -734,44 +700,7 @@ task.spawn(function()
 end)
 
 --==================================================
--- 26. AUTO REBIRTH
---==================================================
-
-task.spawn(function()
-
-    while true do
-
-        if rebirthActive then
-
-            pcall(function()
-
-                for _, remote in ipairs(remotesFolder:GetChildren()) do
-
-                    if remote:IsA("RemoteEvent")
-                        and remote.Name == "Rebirth" then
-
-                        remote:FireServer()
-
-                    end
-
-                end
-
-            end)
-
-            task.wait(1)
-
-        else
-
-            task.wait(0.3)
-
-        end
-
-    end
-
-end)
-
---==================================================
--- 27. ANTI-AFK
+-- 25. ANTI-AFK
 --==================================================
 
 player.Idled:Connect(function()
@@ -791,4 +720,4 @@ end)
 
 --==================================================
 -- FIN
---==================================================
+--================================================== 
