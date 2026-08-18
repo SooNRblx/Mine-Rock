@@ -1,5 +1,5 @@
 --==================================================
--- MINE ROCKS - PREMIUM UI / AUTOMATION
+-- MINE ROCKS - PREMIUM DARK UI / AUTOMATION
 --==================================================
 
 --==================================================
@@ -9,7 +9,6 @@
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
-local TweenService = game:GetService("TweenService")
 local VirtualUser = game:GetService("VirtualUser")
 
 local player = Players.LocalPlayer
@@ -30,7 +29,6 @@ local jumpPowerValue = 50
 --==================================================
 
 local farmPoints = {
-
     {
         position = Vector3.new(-35.52, 43.027, 3877.809),
         waitTime = 2
@@ -55,7 +53,6 @@ local farmPoints = {
         position = Vector3.new(23.434, 42.303, 3825.376),
         waitTime = 2
     }
-
 }
 
 --==================================================
@@ -69,7 +66,65 @@ if oldGui then
 end
 
 --==================================================
--- 5. SCREEN GUI
+-- 5. COLORS
+--==================================================
+
+local COLORS = {
+    Background = Color3.fromRGB(10, 11, 14),
+    Main = Color3.fromRGB(18, 19, 23),
+    Header = Color3.fromRGB(22, 23, 28),
+
+    Section = Color3.fromRGB(25, 26, 31),
+    SectionHover = Color3.fromRGB(29, 30, 36),
+
+    Border = Color3.fromRGB(65, 67, 76),
+
+    Text = Color3.fromRGB(245, 246, 250),
+    Secondary = Color3.fromRGB(155, 158, 170),
+    Muted = Color3.fromRGB(90, 93, 103),
+
+    Accent = Color3.fromRGB(115, 180, 255),
+    AccentDark = Color3.fromRGB(65, 120, 190),
+
+    Green = Color3.fromRGB(70, 205, 105),
+    GreenDark = Color3.fromRGB(32, 95, 53),
+
+    Off = Color3.fromRGB(45, 47, 54),
+    OffKnob = Color3.fromRGB(155, 158, 168),
+
+    Red = Color3.fromRGB(215, 65, 70),
+
+    Slider = Color3.fromRGB(48, 50, 58),
+    SliderBlue = Color3.fromRGB(105, 175, 255),
+    SliderOrange = Color3.fromRGB(255, 190, 90)
+}
+
+--==================================================
+-- 6. UTILITY
+--==================================================
+
+local function addCorner(parent, radius)
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, radius)
+    corner.Parent = parent
+
+    return corner
+end
+
+local function addStroke(parent, color, transparency, thickness)
+
+    local stroke = Instance.new("UIStroke")
+    stroke.Color = color or COLORS.Border
+    stroke.Transparency = transparency or 0.7
+    stroke.Thickness = thickness or 1
+    stroke.Parent = parent
+
+    return stroke
+end
+
+--==================================================
+-- 7. SCREEN GUI
 --==================================================
 
 local screenGui = Instance.new("ScreenGui")
@@ -79,372 +134,217 @@ screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 screenGui.Parent = playerGui
 
 --==================================================
--- 6. COLORS
---==================================================
-
-local COLORS = {
-
-    Background = Color3.fromRGB(17, 17, 21),
-    Panel = Color3.fromRGB(23, 23, 28),
-    Section = Color3.fromRGB(30, 30, 36),
-    SectionHover = Color3.fromRGB(35, 35, 42),
-
-    Header = Color3.fromRGB(27, 27, 33),
-
-    Text = Color3.fromRGB(248, 248, 250),
-    Secondary = Color3.fromRGB(170, 170, 180),
-    Muted = Color3.fromRGB(105, 105, 115),
-
-    Accent = Color3.fromRGB(105, 190, 255),
-
-    Green = Color3.fromRGB(65, 210, 105),
-    GreenDark = Color3.fromRGB(35, 115, 62),
-
-    Off = Color3.fromRGB(55, 55, 63),
-    OffKnob = Color3.fromRGB(175, 175, 185),
-
-    Red = Color3.fromRGB(215, 65, 65),
-
-    Slider = Color3.fromRGB(52, 52, 61),
-    Jump = Color3.fromRGB(255, 190, 90)
-
-}
-
---==================================================
--- 7. UTILITY
---==================================================
-
-local function corner(parent, radius)
-
-    local c = Instance.new("UICorner")
-    c.CornerRadius = UDim.new(0, radius)
-    c.Parent = parent
-
-    return c
-
-end
-
-local function addStroke(parent, color, transparency, thickness)
-
-    local s = Instance.new("UIStroke")
-
-    s.Color = color or Color3.new(1, 1, 1)
-    s.Transparency = transparency or 0.7
-    s.Thickness = thickness or 1
-
-    s.Parent = parent
-
-    return s
-
-end
-
-local function tween(object, time, properties)
-
-    local info = TweenInfo.new(
-        time,
-        Enum.EasingStyle.Quint,
-        Enum.EasingDirection.Out
-    )
-
-    local animation = TweenService:Create(
-        object,
-        info,
-        properties
-    )
-
-    animation:Play()
-
-    return animation
-
-end
-
---==================================================
--- 8. OPEN BUTTON
+-- 8. PREMIUM FLOATING STONE BUTTON
 --==================================================
 
 local logo = Instance.new("TextButton")
-
 logo.Name = "OpenButton"
-logo.Size = UDim2.new(0, 60, 0, 60)
+
+logo.Size = UDim2.new(0, 62, 0, 62)
 logo.Position = UDim2.new(0, 20, 0, 150)
 
-logo.BackgroundColor3 = Color3.fromRGB(47, 48, 54)
+logo.BackgroundColor3 = Color3.fromRGB(31, 32, 38)
 logo.BorderSizePixel = 0
 
--- PIERRE
-logo.Text = "🪨"
-
-logo.TextColor3 = Color3.fromRGB(245, 245, 245)
-logo.TextSize = 30
+-- Pierre
+logo.Text = "◆"
+logo.TextColor3 = Color3.fromRGB(190, 195, 205)
+logo.TextSize = 29
 logo.Font = Enum.Font.GothamBold
 
 logo.AutoButtonColor = false
-logo.ZIndex = 5
-
 logo.Parent = screenGui
 
-corner(logo, 18)
+addCorner(logo, 19)
+addStroke(logo, Color3.fromRGB(105, 110, 125), 0.35, 1.5)
 
-local logoStroke = addStroke(
-    logo,
-    Color3.fromRGB(105, 190, 255),
-    0.25,
-    1.5
-)
+-- Petit reflet
+local logoHighlight = Instance.new("Frame")
+logoHighlight.Name = "Highlight"
 
--- Petit effet intérieur
-local logoInner = Instance.new("Frame")
+logoHighlight.Size = UDim2.new(0, 18, 0, 5)
+logoHighlight.Position = UDim2.new(0, 12, 0, 10)
 
-logoInner.Size = UDim2.new(1, -8, 1, -8)
-logoInner.Position = UDim2.new(0, 4, 0, 4)
+logoHighlight.BackgroundColor3 = Color3.fromRGB(220, 225, 235)
+logoHighlight.BackgroundTransparency = 0.8
+logoHighlight.BorderSizePixel = 0
+logoHighlight.Parent = logo
 
-logoInner.BackgroundTransparency = 1
-logoInner.BorderSizePixel = 0
+addCorner(logoHighlight, 5)
 
-logoInner.ZIndex = 4
-logoInner.Parent = logo
-
-corner(logoInner, 14)
-
-addStroke(
-    logoInner,
-    Color3.fromRGB(255, 255, 255),
-    0.92,
-    1
-)
-
---==================================================
--- 9. LOGO HOVER
---==================================================
-
+-- Animation du bouton
 logo.MouseEnter:Connect(function()
 
-    tween(
-        logo,
-        0.15,
-        {
-            BackgroundColor3 = Color3.fromRGB(58, 60, 68)
-        }
-    )
-
-    logoStroke.Transparency = 0.05
+    logo.BackgroundColor3 = Color3.fromRGB(42, 44, 52)
+    logo.TextColor3 = Color3.fromRGB(225, 230, 240)
 
 end)
 
 logo.MouseLeave:Connect(function()
 
-    tween(
-        logo,
-        0.15,
-        {
-            BackgroundColor3 = Color3.fromRGB(47, 48, 54)
-        }
-    )
-
-    logoStroke.Transparency = 0.25
+    logo.BackgroundColor3 = Color3.fromRGB(31, 32, 38)
+    logo.TextColor3 = Color3.fromRGB(190, 195, 205)
 
 end)
 
 --==================================================
--- 10. MAIN FRAME
+-- 9. MAIN FRAME
 --==================================================
 
 local frame = Instance.new("Frame")
-
 frame.Name = "MainFrame"
-frame.Size = UDim2.new(0, 360, 0, 390)
-frame.Position = UDim2.new(0.5, -180, 0.5, -195)
 
-frame.BackgroundColor3 = COLORS.Panel
+frame.Size = UDim2.new(0, 365, 0, 400)
+frame.Position = UDim2.new(0.5, -182, 0.5, -200)
+
+frame.BackgroundColor3 = COLORS.Main
 frame.BorderSizePixel = 0
-
 frame.Visible = false
 frame.ClipsDescendants = true
 
-frame.ZIndex = 5
 frame.Parent = screenGui
 
-corner(frame, 18)
-
-addStroke(
-    frame,
-    Color3.fromRGB(85, 90, 105),
-    0.55,
-    1
-)
+addCorner(frame, 20)
+addStroke(frame, COLORS.Border, 0.55, 1)
 
 --==================================================
--- 11. HEADER
+-- 10. HEADER
 --==================================================
 
 local header = Instance.new("Frame")
-
 header.Name = "Header"
-header.Size = UDim2.new(1, 0, 0, 62)
 
+header.Size = UDim2.new(1, 0, 0, 66)
 header.BackgroundColor3 = COLORS.Header
 header.BorderSizePixel = 0
-
-header.ZIndex = 6
 header.Parent = frame
 
-corner(header, 18)
+addCorner(header, 20)
 
 local headerBottom = Instance.new("Frame")
-
-headerBottom.Size = UDim2.new(1, 0, 0, 20)
-headerBottom.Position = UDim2.new(0, 0, 1, -20)
+headerBottom.Size = UDim2.new(1, 0, 0, 22)
+headerBottom.Position = UDim2.new(0, 0, 1, -22)
 
 headerBottom.BackgroundColor3 = COLORS.Header
 headerBottom.BorderSizePixel = 0
-
-headerBottom.ZIndex = 6
 headerBottom.Parent = header
 
+-- Petite ligne premium
 local headerLine = Instance.new("Frame")
+headerLine.Size = UDim2.new(1, -28, 0, 1)
+headerLine.Position = UDim2.new(0, 14, 1, -1)
 
-headerLine.Size = UDim2.new(1, -32, 0, 1)
-headerLine.Position = UDim2.new(0, 16, 1, -1)
-
-headerLine.BackgroundColor3 = COLORS.Accent
-headerLine.BackgroundTransparency = 0.65
-
+headerLine.BackgroundColor3 = COLORS.Border
+headerLine.BackgroundTransparency = 0.45
 headerLine.BorderSizePixel = 0
-headerLine.ZIndex = 7
 headerLine.Parent = header
 
 --==================================================
--- 12. TITLE
+-- TITLE
 --==================================================
 
 local title = Instance.new("TextLabel")
 
-title.Size = UDim2.new(1, -100, 0, 28)
-title.Position = UDim2.new(0, 18, 0, 7)
+title.Size = UDim2.new(0, 220, 0, 28)
+title.Position = UDim2.new(0, 20, 0, 9)
 
 title.BackgroundTransparency = 1
-
 title.Text = "Mine Rocks"
-title.TextColor3 = COLORS.Text
 
+title.TextColor3 = COLORS.Text
 title.Font = Enum.Font.GothamBold
-title.TextSize = 19
+title.TextSize = 20
 
 title.TextXAlignment = Enum.TextXAlignment.Left
-
-title.ZIndex = 7
 title.Parent = header
+
+--==================================================
+-- SUBTITLE
+--==================================================
 
 local subtitle = Instance.new("TextLabel")
 
-subtitle.Size = UDim2.new(1, -100, 0, 16)
-subtitle.Position = UDim2.new(0, 19, 0, 35)
+subtitle.Size = UDim2.new(0, 220, 0, 18)
+subtitle.Position = UDim2.new(0, 21, 0, 37)
 
 subtitle.BackgroundTransparency = 1
-
 subtitle.Text = "Premium Design"
-subtitle.TextColor3 = COLORS.Secondary
 
+subtitle.TextColor3 = COLORS.Secondary
 subtitle.Font = Enum.Font.GothamMedium
-subtitle.TextSize = 9
+subtitle.TextSize = 10
 
 subtitle.TextXAlignment = Enum.TextXAlignment.Left
-
-subtitle.ZIndex = 7
 subtitle.Parent = header
 
 --==================================================
--- 13. CLOSE
+-- CLOSE BUTTON
 --==================================================
 
 local close = Instance.new("TextButton")
 
-close.Name = "Close"
-
 close.Size = UDim2.new(0, 34, 0, 34)
-close.Position = UDim2.new(1, -47, 0, 14)
+close.Position = UDim2.new(1, -48, 0, 16)
 
-close.BackgroundColor3 = Color3.fromRGB(42, 42, 49)
+close.BackgroundColor3 = Color3.fromRGB(37, 38, 44)
 close.BorderSizePixel = 0
 
 close.Text = "×"
 close.TextColor3 = COLORS.Secondary
-close.TextSize = 22
-close.Font = Enum.Font.GothamBold
+close.TextSize = 23
+close.Font = Enum.Font.GothamMedium
 
 close.AutoButtonColor = false
-
-close.ZIndex = 8
 close.Parent = header
 
-corner(close, 11)
-
-local closeStroke = addStroke(
-    close,
-    Color3.fromRGB(90, 90, 100),
-    0.55,
-    1
-)
+addCorner(close, 11)
 
 close.MouseEnter:Connect(function()
 
-    tween(
-        close,
-        0.15,
-        {
-            BackgroundColor3 = COLORS.Red,
-            TextColor3 = Color3.new(1,1,1)
-        }
-    )
+    close.BackgroundColor3 = COLORS.Red
+    close.TextColor3 = Color3.new(1, 1, 1)
 
 end)
 
 close.MouseLeave:Connect(function()
 
-    tween(
-        close,
-        0.15,
-        {
-            BackgroundColor3 = Color3.fromRGB(42,42,49),
-            TextColor3 = COLORS.Secondary
-        }
-    )
+    close.BackgroundColor3 = Color3.fromRGB(37, 38, 44)
+    close.TextColor3 = COLORS.Secondary
 
 end)
 
 --==================================================
--- 14. SCROLL
+-- 11. SCROLL
 --==================================================
 
 local scroll = Instance.new("ScrollingFrame")
 
 scroll.Name = "Content"
 
-scroll.Size = UDim2.new(1, -20, 1, -74)
-scroll.Position = UDim2.new(0, 10, 0, 68)
+scroll.Size = UDim2.new(1, -20, 1, -82)
+scroll.Position = UDim2.new(0, 10, 0, 72)
 
 scroll.BackgroundTransparency = 1
 scroll.BorderSizePixel = 0
 
 scroll.ScrollBarThickness = 3
-scroll.ScrollBarImageColor3 = COLORS.Accent
+scroll.ScrollBarImageColor3 = Color3.fromRGB(90, 94, 105)
 scroll.ScrollBarImageTransparency = 0.35
 
-scroll.CanvasSize = UDim2.new(0, 0, 0, 430)
+scroll.CanvasSize = UDim2.new(0, 0, 0, 410)
 
-scroll.ZIndex = 6
 scroll.Parent = frame
 
 local layout = Instance.new("UIListLayout")
 
-layout.Padding = UDim.new(0, 10)
+layout.Padding = UDim.new(0, 11)
 layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 layout.SortOrder = Enum.SortOrder.LayoutOrder
 
 layout.Parent = scroll
 
 --==================================================
--- 15. SECTION
+-- 12. SECTION CREATOR
 --==================================================
 
 local function createSection(name, height)
@@ -453,37 +353,29 @@ local function createSection(name, height)
 
     section.Name = name
 
-    section.Size = UDim2.new(0, 320, 0, height)
+    section.Size = UDim2.new(0, 325, 0, height)
 
     section.BackgroundColor3 = COLORS.Section
     section.BorderSizePixel = 0
 
-    section.ZIndex = 7
     section.Parent = scroll
 
-    corner(section, 14)
-
-    addStroke(
-        section,
-        Color3.fromRGB(75, 78, 90),
-        0.72,
-        1
-    )
+    addCorner(section, 15)
+    addStroke(section, COLORS.Border, 0.78, 1)
 
     return section
-
 end
 
 --==================================================
--- 16. SECTION TITLE
+-- SECTION TITLE
 --==================================================
 
 local function createSectionTitle(parent, text)
 
     local label = Instance.new("TextLabel")
 
-    label.Size = UDim2.new(0, 150, 0, 20)
-    label.Position = UDim2.new(0, 14, 0, 8)
+    label.Size = UDim2.new(0, 200, 0, 20)
+    label.Position = UDim2.new(0, 15, 0, 9)
 
     label.BackgroundTransparency = 1
 
@@ -495,192 +387,164 @@ local function createSectionTitle(parent, text)
 
     label.TextXAlignment = Enum.TextXAlignment.Left
 
-    label.ZIndex = 8
     label.Parent = parent
 
     return label
-
 end
 
 --==================================================
--- 17. TOGGLE
+-- PREMIUM TOGGLE
 --==================================================
 
 local function createToggle(parent, text, y)
 
     local label = Instance.new("TextLabel")
 
-    label.Size = UDim2.new(0, 170, 0, 34)
-    label.Position = UDim2.new(0, 14, 0, y)
+    label.Size = UDim2.new(0, 180, 0, 34)
+    label.Position = UDim2.new(0, 15, 0, y)
 
     label.BackgroundTransparency = 1
-
     label.Text = text
-    label.TextColor3 = COLORS.Text
 
+    label.TextColor3 = COLORS.Text
     label.Font = Enum.Font.GothamMedium
     label.TextSize = 14
 
     label.TextXAlignment = Enum.TextXAlignment.Left
-
-    label.ZIndex = 8
     label.Parent = parent
 
+    -- Conteneur
     local button = Instance.new("TextButton")
 
-    button.Size = UDim2.new(0, 76, 0, 32)
-    button.Position = UDim2.new(1, -90, 0, y + 1)
+    button.Size = UDim2.new(0, 72, 0, 30)
+    button.Position = UDim2.new(1, -87, 0, y + 2)
 
     button.BackgroundColor3 = COLORS.Off
     button.BorderSizePixel = 0
 
     button.Text = ""
-
     button.AutoButtonColor = false
 
-    button.ZIndex = 9
     button.Parent = parent
 
-    corner(button, 16)
+    addCorner(button, 15)
 
-    local buttonStroke = addStroke(
-        button,
-        Color3.fromRGB(95, 95, 105),
-        0.55,
-        1
-    )
+    local buttonStroke =
+        addStroke(button, Color3.fromRGB(75, 78, 88), 0.55, 1)
 
+    -- ON / OFF petit texte
+    local stateText = Instance.new("TextLabel")
+
+    stateText.Size = UDim2.new(1, -30, 1, 0)
+    stateText.Position = UDim2.new(0, 25, 0, 0)
+
+    stateText.BackgroundTransparency = 1
+
+    stateText.Text = "OFF"
+    stateText.TextColor3 = COLORS.Secondary
+
+    stateText.Font = Enum.Font.GothamBold
+    stateText.TextSize = 9
+
+    stateText.Parent = button
+
+    -- Curseur
     local knob = Instance.new("Frame")
 
-    knob.Size = UDim2.new(0, 24, 0, 24)
-    knob.Position = UDim2.new(0, 4, 0.5, -12)
+    knob.Size = UDim2.new(0, 22, 0, 22)
+    knob.Position = UDim2.new(0, 4, 0.5, -11)
 
     knob.BackgroundColor3 = COLORS.OffKnob
     knob.BorderSizePixel = 0
 
-    knob.ZIndex = 10
     knob.Parent = button
 
-    corner(knob, 12)
+    addCorner(knob, 11)
 
-    local knobStroke = addStroke(
-        knob,
-        Color3.fromRGB(220, 220, 225),
-        0.65,
-        1
-    )
+    local knobStroke =
+        addStroke(knob, Color3.fromRGB(220, 220, 225), 0.65, 1)
 
-    -- IMPORTANT :
-    -- Aucun Activated ici.
-    -- L'état est géré uniquement par le code principal.
-    local function setState(state)
+    local state = false
+
+    local function setState(value)
+
+        state = value
 
         if state then
 
-            tween(
-                button,
-                0.18,
-                {
-                    BackgroundColor3 = COLORS.GreenDark
-                }
-            )
+            button.BackgroundColor3 = COLORS.GreenDark
 
-            tween(
-                knob,
-                0.18,
-                {
-                    Position = UDim2.new(1, -28, 0.5, -12),
-                    BackgroundColor3 = COLORS.Green
-                }
-            )
+            knob.Position =
+                UDim2.new(1, -26, 0.5, -11)
+
+            knob.BackgroundColor3 = COLORS.Green
+
+            stateText.Text = "ON"
+            stateText.TextColor3 = Color3.fromRGB(210, 255, 220)
 
             buttonStroke.Color = COLORS.Green
-            buttonStroke.Transparency = 0.2
+            buttonStroke.Transparency = 0.35
 
-            knobStroke.Color = Color3.fromRGB(160,255,180)
-            knobStroke.Transparency = 0.2
+            knobStroke.Color = COLORS.Green
+            knobStroke.Transparency = 0.35
 
         else
 
-            tween(
-                button,
-                0.18,
-                {
-                    BackgroundColor3 = COLORS.Off
-                }
-            )
+            button.BackgroundColor3 = COLORS.Off
 
-            tween(
-                knob,
-                0.18,
-                {
-                    Position = UDim2.new(0, 4, 0.5, -12),
-                    BackgroundColor3 = COLORS.OffKnob
-                }
-            )
+            knob.Position =
+                UDim2.new(0, 4, 0.5, -11)
 
-            buttonStroke.Color = Color3.fromRGB(95,95,105)
+            knob.BackgroundColor3 = COLORS.OffKnob
+
+            stateText.Text = "OFF"
+            stateText.TextColor3 = COLORS.Secondary
+
+            buttonStroke.Color =
+                Color3.fromRGB(75, 78, 88)
+
             buttonStroke.Transparency = 0.55
 
-            knobStroke.Color = Color3.fromRGB(220,220,225)
+            knobStroke.Color =
+                Color3.fromRGB(220, 220, 225)
+
             knobStroke.Transparency = 0.65
 
         end
-
     end
 
     return button, setState
-
 end
 
 --==================================================
--- 18. FARM
+-- 13. FARM
 --==================================================
 
-local farmSection = createSection(
-    "Farm",
-    85
-)
+local farmSection = createSection("Farm", 78)
 
-createSectionTitle(
-    farmSection,
-    "FARM"
-)
+createSectionTitle(farmSection, "FARM")
 
-local btnAF, setAutoFarmVisual = createToggle(
-    farmSection,
-    "Auto Farm",
-    36
-)
-
-btnAF.Activated:Connect(function()
-
-    autoFarmActive = not autoFarmActive
-
-    setAutoFarmVisual(autoFarmActive)
-
-end)
+local btnAF, setAutoFarmVisual =
+    createToggle(
+        farmSection,
+        "Auto Farm",
+        32
+    )
 
 --==================================================
--- 19. MOVEMENT
+-- 14. MOVEMENT
 --==================================================
 
-local moveSection = createSection(
-    "Movement",
-    150
-)
+local moveSection = createSection("Movement", 154)
 
-createSectionTitle(
-    moveSection,
-    "MOVEMENT"
-)
+createSectionTitle(moveSection, "MOVEMENT")
 
--- WALK SPEED
+-- WALKSPEED
 
 local labelWS = Instance.new("TextLabel")
 
 labelWS.Size = UDim2.new(0, 220, 0, 25)
-labelWS.Position = UDim2.new(0, 14, 0, 33)
+labelWS.Position = UDim2.new(0, 15, 0, 32)
 
 labelWS.BackgroundTransparency = 1
 
@@ -691,61 +555,51 @@ labelWS.Font = Enum.Font.GothamMedium
 labelWS.TextSize = 14
 
 labelWS.TextXAlignment = Enum.TextXAlignment.Left
-
-labelWS.ZIndex = 8
 labelWS.Parent = moveSection
 
 local sliderWS = Instance.new("Frame")
 
 sliderWS.Size = UDim2.new(0, 270, 0, 6)
-sliderWS.Position = UDim2.new(0.5, -135, 0, 66)
+sliderWS.Position = UDim2.new(0.5, -135, 0, 64)
 
 sliderWS.BackgroundColor3 = COLORS.Slider
 sliderWS.BorderSizePixel = 0
 
-sliderWS.ZIndex = 8
 sliderWS.Parent = moveSection
 
-corner(sliderWS, 5)
+addCorner(sliderWS, 6)
 
 local fillWS = Instance.new("Frame")
 
 fillWS.Size = UDim2.new(0, 0, 1, 0)
 
-fillWS.BackgroundColor3 = COLORS.Accent
+fillWS.BackgroundColor3 = COLORS.SliderBlue
 fillWS.BorderSizePixel = 0
 
-fillWS.ZIndex = 9
 fillWS.Parent = sliderWS
 
-corner(fillWS, 5)
+addCorner(fillWS, 6)
 
 local dotWS = Instance.new("Frame")
 
 dotWS.Size = UDim2.new(0, 18, 0, 18)
-dotWS.Position = UDim2.new(0, -1, 0.5, -9)
+dotWS.Position = UDim2.new(0, -9, 0.5, -9)
 
-dotWS.BackgroundColor3 = Color3.fromRGB(235,247,255)
+dotWS.BackgroundColor3 = Color3.fromRGB(235, 242, 255)
 dotWS.BorderSizePixel = 0
 
-dotWS.ZIndex = 10
 dotWS.Parent = sliderWS
 
-corner(dotWS, 10)
+addCorner(dotWS, 9)
 
-addStroke(
-    dotWS,
-    COLORS.Accent,
-    0.2,
-    1
-)
+addStroke(dotWS, COLORS.SliderBlue, 0.25, 1)
 
--- JUMP POWER
+-- JUMPPOWER
 
 local labelJP = Instance.new("TextLabel")
 
 labelJP.Size = UDim2.new(0, 220, 0, 25)
-labelJP.Position = UDim2.new(0, 14, 0, 91)
+labelJP.Position = UDim2.new(0, 15, 0, 91)
 
 labelJP.BackgroundTransparency = 1
 
@@ -756,96 +610,73 @@ labelJP.Font = Enum.Font.GothamMedium
 labelJP.TextSize = 14
 
 labelJP.TextXAlignment = Enum.TextXAlignment.Left
-
-labelJP.ZIndex = 8
 labelJP.Parent = moveSection
 
 local sliderJP = Instance.new("Frame")
 
 sliderJP.Size = UDim2.new(0, 270, 0, 6)
-sliderJP.Position = UDim2.new(0.5, -135, 0, 124)
+sliderJP.Position = UDim2.new(0.5, -135, 0, 123)
 
 sliderJP.BackgroundColor3 = COLORS.Slider
 sliderJP.BorderSizePixel = 0
 
-sliderJP.ZIndex = 8
 sliderJP.Parent = moveSection
 
-corner(sliderJP, 5)
+addCorner(sliderJP, 6)
 
 local fillJP = Instance.new("Frame")
 
 fillJP.Size = UDim2.new(0, 0, 1, 0)
 
-fillJP.BackgroundColor3 = COLORS.Jump
+fillJP.BackgroundColor3 = COLORS.SliderOrange
 fillJP.BorderSizePixel = 0
 
-fillJP.ZIndex = 9
 fillJP.Parent = sliderJP
 
-corner(fillJP, 5)
+addCorner(fillJP, 6)
 
 local dotJP = Instance.new("Frame")
 
 dotJP.Size = UDim2.new(0, 18, 0, 18)
-dotJP.Position = UDim2.new(0, -1, 0.5, -9)
+dotJP.Position = UDim2.new(0, -9, 0.5, -9)
 
-dotJP.BackgroundColor3 = Color3.fromRGB(255,245,225)
+dotJP.BackgroundColor3 = Color3.fromRGB(255, 245, 225)
 dotJP.BorderSizePixel = 0
 
-dotJP.ZIndex = 10
 dotJP.Parent = sliderJP
 
-corner(dotJP, 10)
+addCorner(dotJP, 9)
 
-addStroke(
-    dotJP,
-    COLORS.Jump,
-    0.2,
-    1
-)
+addStroke(dotJP, COLORS.SliderOrange, 0.25, 1)
 
 --==================================================
--- 20. MISC
+-- 15. MISC
 --==================================================
 
-local miscSection = createSection(
-    "Misc",
-    85
-)
+local miscSection = createSection("Misc", 78)
 
-createSectionTitle(
-    miscSection,
-    "MISC"
-)
+createSectionTitle(miscSection, "MISC")
 
-local btnAA, setAntiAfkVisual = createToggle(
-    miscSection,
-    "Anti-AFK",
-    36
-)
-
-btnAA.Activated:Connect(function()
-
-    antiAfkActive = not antiAfkActive
-
-    setAntiAfkVisual(antiAfkActive)
-
-end)
+local btnAA, setAntiAfkVisual =
+    createToggle(
+        miscSection,
+        "Anti-AFK",
+        32
+    )
 
 --==================================================
--- 21. DRAG SYSTEM
+-- 16. DRAG SYSTEM
 --==================================================
 
-local function makeDraggable(obj, target)
+local function makeDraggable(object, target)
 
-    target = target or obj
+    target = target or object
 
     local dragging = false
     local dragStart
     local startPosition
 
-    obj.InputBegan:Connect(function(input)
+    object.InputBegan:Connect(function(input)
 
         if input.UserInputType == Enum.UserInputType.MouseButton1
             or input.UserInputType == Enum.UserInputType.Touch then
@@ -856,7 +687,6 @@ local function makeDraggable(obj, target)
             startPosition = target.Position
 
         end
-
     end)
 
     UserInputService.InputChanged:Connect(function(input)
@@ -868,7 +698,8 @@ local function makeDraggable(obj, target)
         if input.UserInputType == Enum.UserInputType.MouseMovement
             or input.UserInputType == Enum.UserInputType.Touch then
 
-            local delta = input.Position - dragStart
+            local delta =
+                input.Position - dragStart
 
             target.Position = UDim2.new(
                 startPosition.X.Scale,
@@ -879,7 +710,6 @@ local function makeDraggable(obj, target)
             )
 
         end
-
     end)
 
     UserInputService.InputEnded:Connect(function(input)
@@ -890,42 +720,30 @@ local function makeDraggable(obj, target)
             dragging = false
 
         end
-
     end)
-
 end
 
--- Menu déplaçable
+-- Fenêtre déplaçable
 makeDraggable(header, frame)
 
--- Pierre déplaçable
+-- Pierre entièrement déplaçable
 makeDraggable(logo)
 
 --==================================================
--- 22. SLIDER SYSTEM
+-- 17. SLIDER SYSTEM
 --==================================================
 
-local function setupSlider(
-    back,
-    dot,
-    fill,
-    min,
-    max,
-    callback
-)
+local function setupSlider(back, dot, fill, min, max, callback)
 
     local sliding = false
 
     local function update(input)
 
         local relative = math.clamp(
-
             (input.Position.X - back.AbsolutePosition.X)
             / back.AbsoluteSize.X,
-
             0,
             1
-
         )
 
         dot.Position = UDim2.new(
@@ -947,7 +765,6 @@ local function setupSlider(
         )
 
         callback(value)
-
     end
 
     back.InputBegan:Connect(function(input)
@@ -956,13 +773,11 @@ local function setupSlider(
             or input.UserInputType == Enum.UserInputType.Touch then
 
             sliding = true
-
             scroll.ScrollingEnabled = false
 
             update(input)
 
         end
-
     end)
 
     UserInputService.InputChanged:Connect(function(input)
@@ -975,9 +790,7 @@ local function setupSlider(
                 update(input)
 
             end
-
         end
-
     end)
 
     UserInputService.InputEnded:Connect(function(input)
@@ -986,21 +799,20 @@ local function setupSlider(
             or input.UserInputType == Enum.UserInputType.Touch then
 
             sliding = false
-
             scroll.ScrollingEnabled = true
 
         end
-
     end)
-
 end
 
-setupSlider(
+--==================================================
+-- WALK SPEED SLIDER
+--==================================================
 
+setupSlider(
     sliderWS,
     dotWS,
     fillWS,
-
     16,
     250,
 
@@ -1012,15 +824,16 @@ setupSlider(
             "WalkSpeed: " .. value
 
     end
-
 )
 
-setupSlider(
+--==================================================
+-- JUMP POWER SLIDER
+--==================================================
 
+setupSlider(
     sliderJP,
     dotJP,
     fillJP,
-
     50,
     350,
 
@@ -1032,11 +845,10 @@ setupSlider(
             "JumpPower: " .. value
 
     end
-
 )
 
 --==================================================
--- 23. OPEN / CLOSE
+-- 18. MENU
 --==================================================
 
 logo.Activated:Connect(function()
@@ -1052,7 +864,60 @@ close.Activated:Connect(function()
 end)
 
 --==================================================
--- 24. MOVEMENT
+-- 19. AUTO FARM
+--==================================================
+
+-- Anti double-clic
+local autoFarmDebounce = false
+
+btnAF.Activated:Connect(function()
+
+    if autoFarmDebounce then
+        return
+    end
+
+    autoFarmDebounce = true
+
+    autoFarmActive = not autoFarmActive
+
+    setAutoFarmVisual(autoFarmActive)
+
+    task.delay(0.15, function()
+
+        autoFarmDebounce = false
+
+    end)
+
+end)
+
+--==================================================
+-- 20. ANTI-AFK
+--==================================================
+
+local antiAfkDebounce = false
+
+btnAA.Activated:Connect(function()
+
+    if antiAfkDebounce then
+        return
+    end
+
+    antiAfkDebounce = true
+
+    antiAfkActive = not antiAfkActive
+
+    setAntiAfkVisual(antiAfkActive)
+
+    task.delay(0.15, function()
+
+        antiAfkDebounce = false
+
+    end)
+
+end)
+
+--==================================================
+-- 21. MOVEMENT
 --==================================================
 
 RunService.Stepped:Connect(function()
@@ -1083,7 +948,7 @@ RunService.Stepped:Connect(function()
 end)
 
 --==================================================
--- 25. TELEPORT
+-- 22. TELEPORT
 --==================================================
 
 local function teleportTo(position)
@@ -1112,7 +977,7 @@ local function teleportTo(position)
 end
 
 --==================================================
--- 26. AUTO FARM
+-- 23. AUTO FARM LOOP
 --==================================================
 
 task.spawn(function()
@@ -1127,13 +992,9 @@ task.spawn(function()
                     break
                 end
 
-                teleportTo(
-                    point.position
-                )
+                teleportTo(point.position)
 
-                task.wait(
-                    point.waitTime
-                )
+                task.wait(point.waitTime)
 
             end
 
@@ -1148,7 +1009,7 @@ task.spawn(function()
 end)
 
 --==================================================
--- 27. ANTI-AFK
+-- 24. ANTI-AFK
 --==================================================
 
 player.Idled:Connect(function()
@@ -1158,7 +1019,6 @@ player.Idled:Connect(function()
         pcall(function()
 
             VirtualUser:CaptureController()
-
             VirtualUser:ClickButton2(
                 Vector2.new()
             )
