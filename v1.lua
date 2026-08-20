@@ -26,6 +26,7 @@ local jumpPowerValue = 50
 
 local menuOpen = false
 local autoFarmCooldown = false
+local antiAfkCooldown = false
 
 --==================================================
 -- 3. AUTO FARM POSITIONS
@@ -160,7 +161,7 @@ logo.Position = UDim2.new(0, 22, 0, 150)
 logo.BackgroundColor3 = Color3.fromRGB(38, 38, 45)
 logo.BorderSizePixel = 0
 
-logo.Text = "◆"
+logo.Text = "鈼�"
 logo.TextColor3 = Color3.fromRGB(150, 185, 215)
 logo.TextSize = 30
 logo.Font = Enum.Font.GothamBold
@@ -305,7 +306,7 @@ close.Size = UDim2.new(0, 34, 0, 34)
 close.Position = UDim2.new(1, -48, 0, 14)
 
 close.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
-close.Text = "×"
+close.Text = "脳"
 close.TextColor3 = COLORS.Secondary
 close.TextSize = 23
 close.Font = Enum.Font.GothamBold
@@ -454,7 +455,7 @@ local function createToggle(parent, text, y)
         0.6
     )
 
-    -- OFF à droite / ON à gauche
+    -- OFF 脿 droite / ON 脿 gauche
 
     local status = Instance.new("TextLabel")
 
@@ -924,7 +925,7 @@ end)
 
 btnAF.Activated:Connect(function()
 
-    -- Empêche les doubles clics / clics rapides
+    -- Emp锚che les doubles clics / clics rapides
     if autoFarmCooldown then
         return
     end
@@ -958,7 +959,7 @@ local function startAntiAfk()
 
     antiAfkLoopRunning = true
 
-    -- Détection d'inactivité Roblox
+    -- D茅tection d'inactivit茅 Roblox
 
     if not antiAfkConnection then
 
@@ -981,13 +982,13 @@ local function startAntiAfk()
 
     end
 
-    -- Activité périodique
+    -- Activit茅 p茅riodique
 
     task.spawn(function()
 
         while antiAfkActive do
 
-            task.wait(45)
+            task.wait(60)
 
             if not antiAfkActive then
                 break
@@ -999,6 +1000,18 @@ local function startAntiAfk()
                 VirtualUser:ClickButton2(
                     Vector2.new(0, 0)
                 )
+
+            end)
+
+            -- Saut toutes les 60 secondes pour garder le joueur actif
+            pcall(function()
+
+                local character = player.Character
+                local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+
+                if humanoid then
+                    humanoid.Jump = true
+                end
 
             end)
 
@@ -1018,6 +1031,13 @@ end
 
 btnAA.Activated:Connect(function()
 
+    -- Emp锚che les doubles clics / clics rapides
+    if antiAfkCooldown then
+        return
+    end
+
+    antiAfkCooldown = true
+
     antiAfkActive = not antiAfkActive
 
     setAntiAfkVisual(antiAfkActive)
@@ -1031,6 +1051,10 @@ btnAA.Activated:Connect(function()
         stopAntiAfk()
 
     end
+
+    task.delay(5, function()
+        antiAfkCooldown = false
+    end)
 
 end)
 
