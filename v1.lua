@@ -26,7 +26,6 @@ local jumpPowerValue = 50
 
 local menuOpen = false
 local autoFarmCooldown = false
-local antiAfkCooldown = false
 
 --==================================================
 -- 3. AUTO FARM POSITIONS
@@ -120,6 +119,7 @@ local function addCorner(object, radius)
     corner.Parent = object
 
     return corner
+
 end
 
 local function addStroke(object, color, transparency, thickness)
@@ -131,6 +131,7 @@ local function addStroke(object, color, transparency, thickness)
     stroke.Parent = object
 
     return stroke
+
 end
 
 local function addGradient(object, color1, color2, rotation)
@@ -146,6 +147,7 @@ local function addGradient(object, color1, color2, rotation)
     gradient.Parent = object
 
     return gradient
+
 end
 
 --==================================================
@@ -161,7 +163,7 @@ logo.Position = UDim2.new(0, 22, 0, 150)
 logo.BackgroundColor3 = Color3.fromRGB(38, 38, 45)
 logo.BorderSizePixel = 0
 
-logo.Text = "鈼�"
+logo.Text = "◆"
 logo.TextColor3 = Color3.fromRGB(150, 185, 215)
 logo.TextSize = 30
 logo.Font = Enum.Font.GothamBold
@@ -188,11 +190,14 @@ addGradient(
 -- Petit reflet
 
 local logoHighlight = Instance.new("Frame")
+
 logoHighlight.Size = UDim2.new(0, 20, 0, 2)
 logoHighlight.Position = UDim2.new(0, 11, 0, 9)
+
 logoHighlight.BackgroundColor3 = Color3.fromRGB(170, 195, 220)
 logoHighlight.BackgroundTransparency = 0.75
 logoHighlight.BorderSizePixel = 0
+
 logoHighlight.Parent = logo
 
 addCorner(logoHighlight, 5)
@@ -210,6 +215,7 @@ shadow.Position = UDim2.new(0.5, -180, 0.5, -190)
 shadow.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 shadow.BackgroundTransparency = 0.45
 shadow.BorderSizePixel = 0
+
 shadow.Visible = false
 shadow.Parent = screenGui
 
@@ -223,8 +229,10 @@ frame.Position = UDim2.new(0.5, -180, 0.5, -195)
 
 frame.BackgroundColor3 = COLORS.Background
 frame.BorderSizePixel = 0
+
 frame.Visible = false
 frame.ClipsDescendants = true
+
 frame.Parent = screenGui
 
 addCorner(frame, 18)
@@ -247,23 +255,30 @@ header.Position = UDim2.new(0, 0, 0, 0)
 
 header.BackgroundColor3 = COLORS.Header
 header.BorderSizePixel = 0
+
 header.Parent = frame
 
 addCorner(header, 18)
 
 local headerBottom = Instance.new("Frame")
+
 headerBottom.Size = UDim2.new(1, 0, 0, 20)
 headerBottom.Position = UDim2.new(0, 0, 1, -20)
+
 headerBottom.BackgroundColor3 = COLORS.Header
 headerBottom.BorderSizePixel = 0
+
 headerBottom.Parent = header
 
 local headerLine = Instance.new("Frame")
+
 headerLine.Size = UDim2.new(1, -28, 0, 1)
 headerLine.Position = UDim2.new(0, 14, 1, -1)
+
 headerLine.BackgroundColor3 = Color3.fromRGB(70, 70, 82)
 headerLine.BackgroundTransparency = 0.45
 headerLine.BorderSizePixel = 0
+
 headerLine.Parent = header
 
 --==================================================
@@ -281,6 +296,7 @@ title.TextColor3 = COLORS.Text
 title.Font = Enum.Font.GothamBold
 title.TextSize = 19
 title.TextXAlignment = Enum.TextXAlignment.Left
+
 title.Parent = header
 
 local subtitle = Instance.new("TextLabel")
@@ -294,6 +310,7 @@ subtitle.TextColor3 = COLORS.Secondary
 subtitle.Font = Enum.Font.Gotham
 subtitle.TextSize = 10
 subtitle.TextXAlignment = Enum.TextXAlignment.Left
+
 subtitle.Parent = header
 
 --==================================================
@@ -305,25 +322,28 @@ local close = Instance.new("TextButton")
 close.Size = UDim2.new(0, 34, 0, 34)
 close.Position = UDim2.new(1, -48, 0, 14)
 
-close.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
-close.Text = "脳"
+-- Aucun background permanent
+close.BackgroundTransparency = 1
+close.BorderSizePixel = 0
+
+-- Croix classique
+close.Text = "X"
 close.TextColor3 = COLORS.Secondary
-close.TextSize = 23
+close.TextSize = 18
 close.Font = Enum.Font.GothamBold
 
 close.AutoButtonColor = false
 close.Parent = header
 
-addCorner(close, 10)
-
 local closeStroke = addStroke(
     close,
     Color3.fromRGB(90, 90, 100),
-    0.65
+    1
 )
 
 close.MouseEnter:Connect(function()
 
+    close.BackgroundTransparency = 0
     close.BackgroundColor3 = COLORS.Red
     close.TextColor3 = Color3.new(1, 1, 1)
 
@@ -331,7 +351,7 @@ end)
 
 close.MouseLeave:Connect(function()
 
-    close.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
+    close.BackgroundTransparency = 1
     close.TextColor3 = COLORS.Secondary
 
 end)
@@ -390,6 +410,7 @@ local function createSection(name, height)
     )
 
     return section
+
 end
 
 local function createSectionTitle(parent, text)
@@ -400,7 +421,6 @@ local function createSectionTitle(parent, text)
     label.Position = UDim2.new(0, 14, 0, 8)
 
     label.BackgroundTransparency = 1
-
     label.Text = text
     label.TextColor3 = COLORS.Secondary
     label.Font = Enum.Font.GothamBold
@@ -411,6 +431,7 @@ local function createSectionTitle(parent, text)
     label.Parent = parent
 
     return label
+
 end
 
 --==================================================
@@ -455,7 +476,7 @@ local function createToggle(parent, text, y)
         0.6
     )
 
-    -- OFF 脿 droite / ON 脿 gauche
+    -- OFF à droite / ON à gauche
 
     local status = Instance.new("TextLabel")
 
@@ -554,6 +575,7 @@ local function createToggle(parent, text, y)
     end
 
     return button, setState
+
 end
 
 --==================================================
@@ -727,7 +749,6 @@ local function makeDraggable(object, target)
             or input.UserInputType == Enum.UserInputType.Touch then
 
             dragging = true
-
             dragStart = input.Position
             startPosition = target.Position
 
@@ -925,7 +946,6 @@ end)
 
 btnAF.Activated:Connect(function()
 
-    -- Emp锚che les doubles clics / clics rapides
     if autoFarmCooldown then
         return
     end
@@ -959,7 +979,7 @@ local function startAntiAfk()
 
     antiAfkLoopRunning = true
 
-    -- D茅tection d'inactivit茅 Roblox
+    -- Détection d'inactivité Roblox
 
     if not antiAfkConnection then
 
@@ -972,6 +992,7 @@ local function startAntiAfk()
             pcall(function()
 
                 VirtualUser:CaptureController()
+
                 VirtualUser:ClickButton2(
                     Vector2.new(0, 0)
                 )
@@ -982,13 +1003,13 @@ local function startAntiAfk()
 
     end
 
-    -- Activit茅 p茅riodique
+    -- Activité périodique
 
     task.spawn(function()
 
         while antiAfkActive do
 
-            task.wait(60)
+            task.wait(45)
 
             if not antiAfkActive then
                 break
@@ -997,21 +1018,10 @@ local function startAntiAfk()
             pcall(function()
 
                 VirtualUser:CaptureController()
+
                 VirtualUser:ClickButton2(
                     Vector2.new(0, 0)
                 )
-
-            end)
-
-            -- Saut toutes les 60 secondes pour garder le joueur actif
-            pcall(function()
-
-                local character = player.Character
-                local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-
-                if humanoid then
-                    humanoid.Jump = true
-                end
 
             end)
 
@@ -1031,13 +1041,6 @@ end
 
 btnAA.Activated:Connect(function()
 
-    -- Emp锚che les doubles clics / clics rapides
-    if antiAfkCooldown then
-        return
-    end
-
-    antiAfkCooldown = true
-
     antiAfkActive = not antiAfkActive
 
     setAntiAfkVisual(antiAfkActive)
@@ -1051,10 +1054,6 @@ btnAA.Activated:Connect(function()
         stopAntiAfk()
 
     end
-
-    task.delay(5, function()
-        antiAfkCooldown = false
-    end)
 
 end)
 
